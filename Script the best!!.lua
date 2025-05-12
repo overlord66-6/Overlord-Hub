@@ -31,18 +31,24 @@ Tab1:AddDiscordInvite({
   Invite = "Link discord invite",
 })
 
--- Add UI Elements
+-- Add Section
 local Section = Tab1:AddSection({"Section"})
-local Paragraph = Tab1:AddParagraph({"Paragraph", "This is a Paragraph\nSecond Line"})
 
+-- Add Paragraph
+local Paragraph = Tab1:AddParagraph({
+  "Paragraph",
+  "This is a Paragraph\nSecond Line"
+})
+
+-- Add Button
 Tab1:AddButton({
-  "Print", 
+  "Print",
   function()
     print("Hello World!")
   end
 })
 
--- Toggle 1
+-- Add First Toggle
 local Toggle1 = Tab1:AddToggle({
   Name = "Toggle",
   Description = "This is a <font color='rgb(88, 101, 242)'>Toggle</font> Example",
@@ -52,7 +58,7 @@ Toggle1:Callback(function(Value)
   -- Your logic here
 end)
 
--- Toggle 2
+-- Add Second Toggle
 Tab1:AddToggle({
   Name = "Toggle",
   Default = false,
