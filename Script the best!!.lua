@@ -64,3 +64,4 @@ Fluent:Notify({
 -- You can use the SaveManager:LoadAutoloadConfig() to load a config
 -- which has been marked to be one that auto loads!
 SaveManager:LoadAutoloadConfig()
+end -- closes the 'do' block
