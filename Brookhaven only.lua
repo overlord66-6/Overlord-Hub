@@ -197,7 +197,7 @@ local bodyGyro, bodyVelocity
 local direction = Vector3.zero
 
 -- Create the toggle
-local Toggle_Fly = Tabs.Fun:CreateToggle("MyToggle", {Title = "Fly (BETA)", Default = false })
+local Toggle_Fly = Tabs.Fun:AddToggle("MyToggle", {Title = "Fly (BETA)", Default = false })
 
 -- Input tracking
 UIS.InputBegan:Connect(function(input, gameProcessed)
