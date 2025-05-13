@@ -183,49 +183,6 @@ ToggleNoClip:OnChanged(function()
     end
 end)
 
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local rootPart = character:WaitForChild("HumanoidRootPart")
-
--- Add the toggle to your tab
-local Toggle_Fly = Tabs.Fun:AddToggle("MyToggle", {
-    Title = "Fly (BETA)",
-    Default = false
-})
-
-local flyConnection
-local bodyGyro
-local bodyVelocity
-
--- Enable fly
-local function startFlying()
-    bodyGyro = Instance.new("BodyGyro")
-    bodyGyro.P = 9e4
-    bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-    bodyGyro.CFrame = workspace.CurrentCamera.CFrame
-    bodyGyro.Parent = rootPart
-
-    bodyVelocity = Instance.new("BodyVelocity")
-    bodyVelocity.Velocity = Vector3.new(0, 50, 0)  -- Upward floating
-    bodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-    bodyVelocity.Parent = rootPart
-
-    flyConnection = RunService.RenderStepped:Connect(function()
-        if bodyGyro then
-            bodyGyro.CFrame = workspace.CurrentCamera.CFrame
-        end
-    end)
-end
-
--- Disable fly
-local function stopFlying()
-    if flyConnection then flyConnection:Disconnect() end
-    if bodyGyro then bodyGyro:Destroy() end
-    if bodyVelocity then bodyVelocity:Destroy() end
-end
 
 -- Toggle logic
 Toggle_Fly:OnChanged(function(state)
@@ -236,9 +193,51 @@ Toggle_Fly:OnChanged(function(state)
     end
 end)
 
--- Set default toggle state
-Toggle_Fly:Set(false)
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+local bodyGyro
+local bodyVelocity
+local flyConnection
+
+-- Add toggle to Fluent UI
+local Toggle_Fly = Tabs.Fun:AddToggle("FlyToggle", {
+    Title = "Fly (BETA)",
+    Default = false,
+    Callback = function(state)
+        if state then
+            -- Start flying
+            bodyGyro = Instance.new("BodyGyro")
+            bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+            bodyGyro.P = 9e4
+            bodyGyro.CFrame = workspace.CurrentCamera.CFrame
+            bodyGyro.Parent = rootPart
+
+            bodyVelocity = Instance.new("BodyVelocity")
+            bodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+            bodyVelocity.Velocity = Vector3.new(0, 50, 0) -- upward motion
+            bodyVelocity.Parent = rootPart
+
+            flyConnection = RunService.RenderStepped:Connect(function()
+                if bodyGyro then
+                    bodyGyro.CFrame = workspace.CurrentCamera.CFrame
+                end
+            end)
+        else
+            -- Stop flying
+            if flyConnection then flyConnection:Disconnect() flyConnection = nil end
+            if bodyGyro then bodyGyro:Destroy() bodyGyro = nil end
+            if bodyVelocity then bodyVelocity:Destroy() bodyVelocity = nil end
+        end
+    end
+})
+
+-- Make sure it starts OFF
+Toggle_Fly:Set(false)
 -- Addons:
 -- SaveManager (Allows you to have a configuration system)
 -- InterfaceManager (Allows you to have a interface managment system)
