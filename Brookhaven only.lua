@@ -236,8 +236,6 @@ local Toggle_Fly = Tabs.Fun:AddToggle("FlyToggle", {
     end
 })
 
--- Make sure it starts OFF
-Toggle_Fly:Set(false)
 -- Addons:
 -- SaveManager (Allows you to have a configuration system)
 -- InterfaceManager (Allows you to have a interface managment system)
